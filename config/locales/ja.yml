@@ -206,9 +206,6 @@ ja:
   views:
     messages:
       create_agenda: 'アジェンダ作成に成功しました！'
-      delete_agenda: 'アジェンダを削除しました！'
-      failed_todelete_agenda: 'アジェンダの削除に失敗しました'
-      cannot_delete_only_a_author_owner: 'agendaの作者及びリーダーだけが削除できます'
       create_article: '記事作成に成功しました！'
       update_article: '記事更新に成功しました！'
       assigned: 'アサインしました！'
@@ -222,11 +219,8 @@ ja:
       failed_to_save_team: '保存に失敗しました、、'
       update_team: 'チーム更新に成功しました！'
       delete_team: 'チーム削除に成功しました！'
-      donot_have_permission: '権限がありません!'
       update_profile: 'プロフィールを編集しました！'
       complete_registration: '登録完了'
-      ownership_transferred: 'オーナー権限が譲渡されました'
-      nominated_owner: 'オーナーに指名されました'
       edit_article: '記事を編集する'
       input_title: '記事タイトルを入力してください'
       input_content: '内容を入力してください'
@@ -263,8 +257,6 @@ ja:
       delete: '削除'
       create: '作成'
       invite: '招待'
-      ownership_transfer: '権限移譲'
-
     top:
       line1: 'このアプリケーションは、チームごと、議題ごとに別れて'
       line2: '特定のイシュー（議題）をメンバーで見やすく共有するためのアプリケーションです'
