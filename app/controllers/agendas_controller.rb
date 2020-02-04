@@ -1,5 +1,5 @@
 class AgendasController < ApplicationController
-  before_action :set_agenda, only: %i[show edit update destroy]
+  before_action :set_agenda, only: %i[show edit update]
 
   def index
     @agendas = Agenda.all
@@ -22,18 +22,12 @@ class AgendasController < ApplicationController
   end
 
   def destroy
-    team_members = @agenda.team.members
-
-    agenda_user = @agenda.user_id
-    owner_id = @agenda.team.owner_id
-    puts "agend_user:#{agenda_user}"
-    puts "owner_id:#{owner_id}"
-    puts "current_user:#{current_user}"
-
-    if  agenda_user == current_user.id || owner_id  == current_user.id
-      @agenda.destroy
-      team_members.each do |members|
-        AssignMailer.del_agenda_mail(members.email, @agenda.title).deliver
+    # binding.pry
+    @agenda = Agenda.find(params[:id])
+    if @agenda.user_id == current_user.id || @agenda.team.owner_id  == current_user.id
+        @agenda.destroy
+        @agenda.team.members.each do |members|
+        AssignMailer.del_agenda_mail(members.email, @agenda.title).deliver     
       end
       redirect_to dashboard_url, notice: I18n.t('views.messages.delete_agenda') 
     elsif 
@@ -49,7 +43,4 @@ class AgendasController < ApplicationController
     @agenda = Agenda.find(params[:id])
   end
 
-  def agenda_params
-    params.fetch(:agenda, {}).permit %i[title description]
-  end
 end
