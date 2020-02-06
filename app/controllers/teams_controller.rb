@@ -15,7 +15,12 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  def edit; end
+  def edit
+      if  @team.owner_id  == current_user.id
+      else
+      redirect_to @team, notice: I18n.t('views.messages.donot_have_permission')
+    end
+  end
 
   def create
     @team = Team.new(team_params)
@@ -35,6 +40,38 @@ class TeamsController < ApplicationController
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :edit
+    end
+  end
+
+  def authority_transfer
+    team = Team.friendly.find(params[:team_id])
+
+    if current_user.id == team.owner_id
+      assign_id = params[:id]
+      assign = Assign.find(params[:id])
+      team.owner_id = assign.user_id
+        if team.save
+          user = User.find(assign.user_id)
+          AssignMailer.update_mail(user.email, team.name).deliver
+          redirect_to team_url(team), notice: I18n.t('views.messages.update_team')
+        else
+          flash.now[:error] = I8n.t('views.messages.failed_to_save_team')
+          render :edit            
+        end
+    else 
+      redirect_to team_url(team), notice: I18n.t('views.messages.donot_have_permission')
+    end
+  end
+
+  def authority_transfer
+    @team = Team.friendly.find(params[:team_id])
+    if current_user.id == @team.owner_id
+      @user = User.find(params[:user_id])
+      @team.update(owner_id: @user.id)
+      AssignMailer.owner_change_mail(@user.email,@team.name).deliver
+      redirect_to @team,notice: 'リーダー権限を移動しました'
+    else
+      redirect_to @team,notice: 'リーダー権限を移動できませんでした'
     end
   end
 
