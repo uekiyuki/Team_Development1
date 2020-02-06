@@ -16,4 +16,8 @@ class Team < ApplicationRecord
     assigns.create(user: user)
   end
 
+  def invite_member(user)
+    assigns.create(user: user)
+  end
+
 end
