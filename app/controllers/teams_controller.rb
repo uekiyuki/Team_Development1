@@ -27,7 +27,7 @@ class TeamsController < ApplicationController
     @team.owner = current_user
     if @team.save
       @team.invite_member(@team.owner)
-      redirect_to teams_url, notice: I18n.t('views.messages.create_team')
+      redirect_to @team, notice: I18n.t('views.messages.create_team')
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :new

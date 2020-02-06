@@ -12,26 +12,6 @@ class AssignsController < ApplicationController
     end
   end
 
-  def update
-    team = Team.friendly.find(params[:team_id])
-
-    if current_user.id == team.owner_id
-      assign_id = params[:id]
-      assign = Assign.find(params[:id])
-      team.owner_id = assign.user_id
-        if team.save
-          user = User.find(assign.user_id)
-          AssignMailer.update_mail(user.email, team.name).deliver
-          redirect_to team_url(team), notice: I18n.t('views.messages.update_team')
-        else
-          flash.now[:error] = I8n.t('views.messages.failed_to_save_team')
-          render :edit            
-        end
-    else 
-      redirect_to team_url(team), notice: I18n.t('views.messages.donot_have_permission')
-    end
-  end
-
   def destroy
     assign = Assign.find(params[:id])
     destroy_message = assign_destroy(assign, assign.user)
@@ -66,5 +46,4 @@ class AssignsController < ApplicationController
     another_team = Assign.find_by(user_id: assigned_user.id).team
     change_keep_team(assigned_user, another_team) if assigned_user.keep_team_id == assign.team_id
   end
-
 end

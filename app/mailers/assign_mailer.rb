@@ -26,3 +26,4 @@ class AssignMailer < ApplicationMailer
   end
 
 end
+
